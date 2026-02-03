@@ -27,3 +27,8 @@ The initial prototype is available here:
 
 Run npm i to install the dependencies. 
 Run npm run dev to start the development
+
+## Inspiration 
+
+https://realtimeinequality.org/
+

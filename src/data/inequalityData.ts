@@ -1,20 +1,8 @@
 // Import CSV data using Vite's ?raw directive
-import csvString from './data_diff.csv?raw';
+// @ts-ignore - Vite handles raw imports
+import csvString from '../data/data_diff.csv?raw';
 
-// Interface for the new CSV structure
-interface CsvRow {
-  year: number;
-  country: string;
-  lowest_1: number;      // Will be ignored as requested
-  lowest_10: number;
-  lowest_50: number;
-  highest_10: number;
-  highest_1: number;
-  region: string;
-  region2: string;
-  shortname: string;
-  decade: number;
-}
+
 
 // Keep existing DataRow interface for backward compatibility
 export interface DataRow {
@@ -53,16 +41,16 @@ const parseCsvData = (): DataRow[] => {
 
     // Simple CSV parser
     const lines = csvString.trim().split('\n');
-    const headers = lines[0].split(',').map(h => h.trim());
+    const headers = lines[0].split(',').map((h: string) => h.trim());
     
     console.log('CSV headers:', headers);
     console.log('Total CSV lines:', lines.length);
     
-    const parsedCsv = lines.slice(1).map((line, lineIndex) => {
+    const parsedCsv = lines.slice(1).map((line: string) => {
       const values = line.split(',');
-      const row: any = {};
+      const row: Record<string, string> = {};
       
-      headers.forEach((header, index) => {
+      headers.forEach((header: string, index: number) => {
         row[header] = values[index]?.trim() || '';
       });
       
@@ -79,26 +67,26 @@ const parseCsvData = (): DataRow[] => {
     // Map CSV rows to DataRow interface with field transformation
     const mappedData: DataRow[] = parsedCsv.map((row: any, index: number) => {
       try {
-        // Validate required fields
-        if (!row.year || !row.country || row.lowest_50 === undefined || 
-            row.lowest_10 === undefined || row.highest_10 === undefined || 
-            row.highest_1 === undefined) {
-          console.warn(`Skipping row ${index} due to missing required fields:`, row);
-          return null;
-        }
+         // Validate required fields
+         if (!row.year || !row.country || row.middle_40 === undefined || 
+             row.bottom_50 === undefined || row.top_10 === undefined || 
+             row.top_1 === undefined) {
+           console.warn(`Skipping row ${index} due to missing required fields:`, row);
+           return null;
+         }
 
-        const mappedRow = {
-          year: parseInt(row.year),
-          country: row.country,
-          middle_40: parseFloat(row.lowest_50),    // Map lowest_50 → middle_40
-          bottom_50: parseFloat(row.lowest_10),    // Map lowest_10 → bottom_50
-          top_10: parseFloat(row.highest_10),      // Map highest_10 → top_10
-          top_1: parseFloat(row.highest_1),        // Map highest_1 → top_1
-          region: row.region || '',
-          region2: row.region2 || '',
-          shortname: row.shortname || '',
-          decade: parseInt(row.decade),
-        };
+         const mappedRow = {
+           year: parseInt(row.year),
+           country: row.country,
+           middle_40: parseFloat(row.middle_40),    // Direct mapping from CSV
+           bottom_50: parseFloat(row.bottom_50),    // Direct mapping from CSV
+           top_10: parseFloat(row.top_10),         // Direct mapping from CSV
+           top_1: parseFloat(row.top_1),           // Direct mapping from CSV
+           region: row.region || '',
+           region2: row.region2 || '',
+           shortname: row.shortname || '',
+           decade: parseInt(row.decade),
+         };
 
         // Debug first few rows
         if (index < 5) {
@@ -110,7 +98,7 @@ const parseCsvData = (): DataRow[] => {
         console.warn(`Error parsing row ${index}:`, error, row);
         return null;
       }
-    }).filter((row): row is DataRow => row !== null);
+    }).filter((row: DataRow | null): row is DataRow => row !== null);
 
     if (mappedData.length === 0) {
       console.warn('No valid data rows after parsing, using fallback');
