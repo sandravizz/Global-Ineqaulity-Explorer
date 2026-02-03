@@ -27,7 +27,7 @@ export default function App() {
         <div className="max-w-[1600px] mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <TrendingUp className="w-5 h-5 text-[#4c8ffe]" />
-            <h1 className="text-xl">Global Inequality Explorer</h1>
+            <h1 className="text-xl">hiGlobal Inequality Explorer</h1>
           </div>
           <Navigation />
         </div>
