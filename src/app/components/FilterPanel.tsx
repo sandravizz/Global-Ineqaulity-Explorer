@@ -52,7 +52,7 @@ export function FilterPanel({ filters, setFilters }: FilterPanelProps) {
           <select
             value={filters.yAxis}
             onChange={(e) => setFilters({ ...filters, yAxis: e.target.value })}
-            className="w-full bg-[#0d1f3a] border border-gray-600 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#020b0c] border border-[#0a6167] rounded px-3 py-2 text-sm text-[#e5e6ed] focus:outline-none focus:border-blue-500"
           >
             <option>Income Share</option>
             <option>Real Income Growth</option>
@@ -66,7 +66,7 @@ export function FilterPanel({ filters, setFilters }: FilterPanelProps) {
           <select
             value={filters.incomeType}
             onChange={(e) => setFilters({ ...filters, incomeType: e.target.value })}
-            className="w-full bg-[#0d1f3a] border border-gray-600 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#020b0c] border border-[#0a6167] rounded px-3 py-2 text-sm text-[#e5e6ed] focus:outline-none focus:border-blue-500"
           >
             <option>Factor Income</option>
             <option>Pre-tax Income</option>
@@ -80,7 +80,7 @@ export function FilterPanel({ filters, setFilters }: FilterPanelProps) {
           <select
             value={filters.country}
             onChange={(e) => setFilters({ ...filters, country: e.target.value })}
-            className="w-full bg-[#0d1f3a] border border-gray-600 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#020b0c] border border-[#0a6167] rounded px-3 py-2 text-sm text-[#e5e6ed] focus:outline-none focus:border-blue-500"
           >
             <option value="All">All Countries</option>
             {countries.map(country => (
@@ -95,7 +95,7 @@ export function FilterPanel({ filters, setFilters }: FilterPanelProps) {
           <select
             value={filters.region}
             onChange={(e) => setFilters({ ...filters, region: e.target.value })}
-            className="w-full bg-[#0d1f3a] border border-gray-600 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#020b0c] border border-[#0a6167] rounded px-3 py-2 text-sm text-[#e5e6ed] focus:outline-none focus:border-blue-500"
           >
             <option value="All">All Regions</option>
             {regions.map(region => (
@@ -111,7 +111,7 @@ export function FilterPanel({ filters, setFilters }: FilterPanelProps) {
             <select
               value={filters.startYear}
               onChange={(e) => setFilters({ ...filters, startYear: e.target.value })}
-              className="flex-1 bg-[#0d1f3a] border border-gray-600 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
+              className="flex-1 bg-[#020b0c] border border-[#0a6167] rounded px-3 py-2 text-sm text-[#e5e6ed] focus:outline-none focus:border-blue-500"
             >
               {years.map(year => (
                 <option key={year}>{year}</option>
@@ -121,7 +121,7 @@ export function FilterPanel({ filters, setFilters }: FilterPanelProps) {
             <select
               value={filters.endYear}
               onChange={(e) => setFilters({ ...filters, endYear: e.target.value })}
-              className="flex-1 bg-[#0d1f3a] border border-gray-600 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
+              className="flex-1 bg-[#020b0c] border border-[#0a6167] rounded px-3 py-2 text-sm text-[#e5e6ed] focus:outline-none focus:border-blue-500"
             >
               {years.map(year => (
                 <option key={year}>{year}</option>

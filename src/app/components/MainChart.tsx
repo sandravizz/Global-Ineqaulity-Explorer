@@ -444,7 +444,7 @@ export function MainChart({ selectedGroups, setSelectedGroups, filters }: MainCh
       </div>
 
       {/* Action Buttons */}
-      <div className="flex gap-3 mt-4">
+      {/* <div className="flex gap-3 mt-4">
         <button className="flex items-center gap-2 px-4 py-2 bg-[#0d1f3a] border border-gray-600 rounded hover:bg-[#1a2f4a] text-sm">
           <Share2 className="w-4 h-4" />
           Share
@@ -453,7 +453,7 @@ export function MainChart({ selectedGroups, setSelectedGroups, filters }: MainCh
           <Download className="w-4 h-4" />
           Download data
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }
