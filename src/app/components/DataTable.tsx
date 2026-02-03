@@ -68,18 +68,17 @@ export function DataTable({ selectedGroups, setSelectedGroups }: DataTableProps)
   };
 
   return (
-    <div className="w-80 bg-[#0d1f3a] rounded-lg p-4 border border-gray-700">
+    <div className="w-80 bg-[#020b0c] rounded-lg p-4 border border-[#0a6167]">
       <div className="mb-3">
         <div className="flex items-center gap-2 mb-2">
-          <div className="w-3 h-3 bg-blue-500 rounded-sm"></div>
-          <h3 className="text-sm">Factor Income growth per adult</h3>
+          <h3 className="text-sm">National Income Shares</h3>
         </div>
         <p className="text-xs text-gray-400">From Jan 1980 to Mar 2024</p>
       </div>
 
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-gray-600">
+          <tr className="border-b border-[#0a6167]">
             <th className="text-left py-2 text-xs text-gray-400">Group</th>
             <th className="text-right py-2 text-xs text-gray-400">Growth (%)</th>
             <th className="text-right py-2 text-xs text-gray-400">Gain ($)</th>
@@ -90,7 +89,7 @@ export function DataTable({ selectedGroups, setSelectedGroups }: DataTableProps)
             <tr
               key={row.id}
               onClick={() => handleToggle(row.id, row.interactive)}
-              className={`border-b border-gray-700 ${
+              className={`border-b border-[#0a6167] ${
                 row.interactive ? 'cursor-pointer hover:bg-[#1a2f4a]' : 'opacity-60 cursor-not-allowed'
               } ${
                 row.selected ? 'bg-[#1a2f4a]' : ''
@@ -101,7 +100,7 @@ export function DataTable({ selectedGroups, setSelectedGroups }: DataTableProps)
                   <div className={`w-4 h-4 border rounded flex items-center justify-center ${
                     row.interactive ? 'border-gray-500' : 'border-gray-700 bg-gray-800'
                   }`}>
-                    {row.selected && <Check className="w-3 h-3 text-blue-400" />}
+                    {row.selected && <Check className="w-3 h-3" />}
                   </div>
                   <span className={`w-2 h-2 ${row.color} rounded-full`}></span>
                   <span className="text-sm">{row.label}</span>
@@ -113,13 +112,6 @@ export function DataTable({ selectedGroups, setSelectedGroups }: DataTableProps)
           ))}
         </tbody>
       </table>
-
-      <div className="mt-4">
-        <button className="text-xs text-gray-400 hover:text-gray-300 flex items-center gap-1">
-          Mutually Exclusive Groups (Click to expand)
-          <span className="text-blue-400">+</span>
-        </button>
-      </div>
     </div>
   );
 }

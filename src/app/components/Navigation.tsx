@@ -6,9 +6,8 @@ export function Navigation() {
   const [activeTab, setActiveTab] = useState('income');
 
   const tabs = [
-    { id: 'income', label: 'Income Inequality' },
-    { id: 'wealth', label: 'Wealth Inequality' },
-    { id: 'labor', label: 'Labor Inequality' },
+    { id: 'income', label: 'Income share' },
+    { id: 'wealth', label: 'Gini coefficient' },
   ];
 
   return (
@@ -19,8 +18,8 @@ export function Navigation() {
           onClick={() => setActiveTab(tab.id)}
           className={`flex items-center gap-2 px-3 py-2 text-sm transition-colors ${
             activeTab === tab.id
-              ? 'text-white border-b-2 border-blue-400'
-              : 'text-gray-400 hover:text-gray-300'
+              ? 'text-white border-b-2 border-[#4c8ffe]'
+              : 'text-gray-500 hover:text-gray-300'
           }`}
         >
           <TrendingUp className="w-4 h-4" />

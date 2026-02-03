@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
-import { Download, Share2 } from "lucide-react";
 import { filterData, DataRow } from "@/data/inequalityData";
 
 interface SelectedGroups {
@@ -44,11 +43,6 @@ export function MainChart({
       filters.region === "All" ? undefined : filters.region,
     );
 
-    // Filter by year range
-    const startYear = parseInt(filters.startYear);
-    const endYear = parseInt(filters.endYear);
-    data = data.filter((d) => d.year >= startYear && d.year <= endYear);
-
     // If multiple countries/regions, aggregate the data by year
     const aggregatedData = new Map<number, DataRow>();
     data.forEach((row) => {
@@ -69,6 +63,9 @@ export function MainChart({
     );
 
     if (chartData.length === 0) return;
+
+    const startYear = chartData[0].year;
+    const endYear = chartData[chartData.length - 1].year;
 
     // Transform data based on y-axis selection
     const transformedData = chartData.map((d) => {

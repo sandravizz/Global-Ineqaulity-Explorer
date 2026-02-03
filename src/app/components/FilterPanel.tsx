@@ -7,8 +7,6 @@ interface Filters {
   incomeType: string;
   country: string;
   region: string;
-  startYear: string;
-  endYear: string;
 }
 
 interface FilterPanelProps {
@@ -19,7 +17,6 @@ interface FilterPanelProps {
 export function FilterPanel({ filters, setFilters }: FilterPanelProps) {
   const countries = getCountries();
   const regions = getRegions();
-  const years = Array.from({ length: 45 }, (_, i) => (1980 + i).toString());
 
   const handleReset = () => {
     setFilters({
@@ -27,24 +24,11 @@ export function FilterPanel({ filters, setFilters }: FilterPanelProps) {
       incomeType: 'Factor Income',
       country: 'US',
       region: 'All',
-      startYear: '1980',
-      endYear: '2024',
     });
   };
 
   return (
     <div className="mb-6">
-      <div className="flex items-center gap-2 mb-4">
-        <h2 className="text-base">Income graph options</h2>
-        <button 
-          onClick={handleReset}
-          className="text-red-500 text-sm flex items-center gap-1 hover:text-red-400"
-        >
-          <RotateCcw className="w-3 h-3" />
-          Reset
-        </button>
-      </div>
-
       <div className="grid grid-cols-12 gap-4 mb-4">
         {/* Y-AXIS */}
         <div className="col-span-2">
@@ -103,32 +87,13 @@ export function FilterPanel({ filters, setFilters }: FilterPanelProps) {
             ))}
           </select>
         </div>
-
-        {/* DATE RANGE */}
-        <div className="col-span-4">
-          <label className="block text-xs text-gray-400 mb-2">TIME RANGE</label>
-          <div className="flex gap-2 items-center">
-            <select
-              value={filters.startYear}
-              onChange={(e) => setFilters({ ...filters, startYear: e.target.value })}
-              className="flex-1 bg-[#020b0c] border border-[#0a6167] rounded px-3 py-2 text-sm text-[#e5e6ed] focus:outline-none focus:border-blue-500"
-            >
-              {years.map(year => (
-                <option key={year}>{year}</option>
-              ))}
-            </select>
-            <div className="text-gray-400 text-sm">TO</div>
-            <select
-              value={filters.endYear}
-              onChange={(e) => setFilters({ ...filters, endYear: e.target.value })}
-              className="flex-1 bg-[#020b0c] border border-[#0a6167] rounded px-3 py-2 text-sm text-[#e5e6ed] focus:outline-none focus:border-blue-500"
-            >
-              {years.map(year => (
-                <option key={year}>{year}</option>
-              ))}
-            </select>
-          </div>
-        </div>
+            <button 
+          onClick={handleReset}
+          className="text-gray-300 text-sm flex items-center gap-1 hover:text-gray-300"
+        >
+          <RotateCcw className="w-3 h-3" />
+          Reset
+        </button>
       </div>
     </div>
   );
