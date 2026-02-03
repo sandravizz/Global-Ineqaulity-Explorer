@@ -332,8 +332,10 @@ export function MainChart({ selectedGroups, setSelectedGroups, filters }: MainCh
           .tickFormat(d => d.toString())
           .ticks(8)
       )
-      .style('color', '#9ca3af')
-      .style('font-size', '12px');
+      .style('color', '#d7dcf0')
+      .style('font-size', '12px')
+      .selectAll('line')
+      .style('stroke', '#d7dcf0');
 
     svg
       .append('g')
@@ -342,8 +344,10 @@ export function MainChart({ selectedGroups, setSelectedGroups, filters }: MainCh
           .tickFormat(yTickFormat)
           .ticks(8)
       )
-      .style('color', '#9ca3af')
-      .style('font-size', '12px');
+      .style('color', '#d7dcf0')
+      .style('font-size', '12px')
+      .selectAll('line')
+      .style('stroke', '#d7dcf0');
 
     // Y-axis label
     svg
@@ -352,7 +356,7 @@ export function MainChart({ selectedGroups, setSelectedGroups, filters }: MainCh
       .attr('y', -55)
       .attr('x', -height / 2)
       .attr('text-anchor', 'middle')
-      .style('fill', '#9ca3af')
+      .style('fill', '#d7dcf0')
       .style('font-size', '12px')
       .text('Real Factor Income Growth');
   }, [selectedGroups, filters]);
