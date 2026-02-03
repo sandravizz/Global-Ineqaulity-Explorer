@@ -390,8 +390,7 @@ export function MainChart({ selectedGroups, setSelectedGroups, filters }: MainCh
           onClick={() => setSelectedGroups({ ...selectedGroups, total: !selectedGroups.total })}
           className="flex items-center gap-2 hover:opacity-80"
         >
-          <span className={`w-3 h-3 ${selectedGroups.total ? 'bg-white' : 'bg-gray-600'}`} style={{ 
-            borderRadius: '2px',
+          <span className={`w-3 h-3 rounded-full ${selectedGroups.total ? 'bg-white' : 'bg-gray-600'}`} style={{ 
             border: selectedGroups.total ? '1px dashed white' : 'none'
           }}></span>
           Top 1%
