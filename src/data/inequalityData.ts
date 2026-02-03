@@ -6,7 +6,7 @@ import csvString from '../data/data_diff.csv?raw';
 export interface DataRow {
   year: number;
   country: string;
-  middle_40: number;
+  top_01: number;
   bottom_50: number;
   top_10: number;
   top_1: number;
@@ -18,12 +18,12 @@ export interface DataRow {
 
 // Fallback sample data (same as before)
 const fallbackData: DataRow[] = [
-  { year: 1980, country: "US", middle_40: 0.35, bottom_50: 0.21, top_10: 0.33, top_1: 0.10, region: "Americas", region2: "North America", shortname: "United States", decade: 1980 },
-  { year: 1990, country: "US", middle_40: 0.31, bottom_50: 0.17, top_10: 0.41, top_1: 0.14, region: "Americas", region2: "North America", shortname: "United States", decade: 1990 },
-  { year: 2000, country: "US", middle_40: 0.27, bottom_50: 0.13, top_10: 0.49, top_1: 0.19, region: "Americas", region2: "North America", shortname: "United States", decade: 2000 },
-  { year: 2010, country: "US", middle_40: 0.23, bottom_50: 0.11, top_10: 0.55, top_1: 0.23, region: "Americas", region2: "North America", shortname: "United States", decade: 2010 },
-  { year: 2020, country: "US", middle_40: 0.21, bottom_50: 0.09, top_10: 0.59, top_1: 0.27, region: "Americas", region2: "North America", shortname: "United States", decade: 2020 },
-  { year: 2024, country: "US", middle_40: 0.20, bottom_50: 0.08, top_10: 0.61, top_1: 0.29, region: "Americas", region2: "North America", shortname: "United States", decade: 2020 },
+  { year: 1980, country: "US", top_01: 0.35, bottom_50: 0.21, top_10: 0.33, top_1: 0.10, region: "Americas", region2: "North America", shortname: "United States", decade: 1980 },
+  { year: 1990, country: "US", top_01: 0.31, bottom_50: 0.17, top_10: 0.41, top_1: 0.14, region: "Americas", region2: "North America", shortname: "United States", decade: 1990 },
+  { year: 2000, country: "US", top_01: 0.27, bottom_50: 0.13, top_10: 0.49, top_1: 0.19, region: "Americas", region2: "North America", shortname: "United States", decade: 2000 },
+  { year: 2010, country: "US", top_01: 0.23, bottom_50: 0.11, top_10: 0.55, top_1: 0.23, region: "Americas", region2: "North America", shortname: "United States", decade: 2010 },
+  { year: 2020, country: "US", top_01: 0.21, bottom_50: 0.09, top_10: 0.59, top_1: 0.27, region: "Americas", region2: "North America", shortname: "United States", decade: 2020 },
+  { year: 2024, country: "US", top_01: 0.20, bottom_50: 0.08, top_10: 0.61, top_1: 0.29, region: "Americas", region2: "North America", shortname: "United States", decade: 2020 },
 ];
 
 // Simple native CSV parser
@@ -66,25 +66,25 @@ const parseCsvData = (): DataRow[] => {
     const mappedData: DataRow[] = parsedCsv.map((row: any, index: number) => {
       try {
          // Validate required fields
-         if (!row.year || !row.country || row.middle_40 === undefined || 
-             row.bottom_50 === undefined || row.top_10 === undefined || 
-             row.top_1 === undefined) {
-           console.warn(`Skipping row ${index} due to missing required fields:`, row);
-           return null;
-         }
+            if (!row.year || !row.country || row.top_01 === undefined || 
+                row.bottom_50 === undefined || row.top_10 === undefined || 
+                row.top_1 === undefined) {
+              console.warn(`Skipping row ${index} due to missing required fields:`, row);
+              return null;
+            }
 
-         const mappedRow = {
-           year: parseInt(row.year),
-           country: row.country,
-           middle_40: parseFloat(row.middle_40),    // Direct mapping from CSV
-           bottom_50: parseFloat(row.bottom_50),    // Direct mapping from CSV
-           top_10: parseFloat(row.top_10),         // Direct mapping from CSV
-           top_1: parseFloat(row.top_1),           // Direct mapping from CSV
-           region: row.region || '',
-           region2: row.region2 || '',
-           shortname: row.shortname || '',
-           decade: parseInt(row.decade),
-         };
+            const mappedRow = {
+              year: parseInt(row.year),
+              country: row.country,
+              top_01: parseFloat(row.top_01),    // Direct mapping from CSV
+              bottom_50: parseFloat(row.bottom_50),    // Direct mapping from CSV
+              top_10: parseFloat(row.top_10),         // Direct mapping from CSV
+              top_1: parseFloat(row.top_1),           // Direct mapping from CSV
+              region: row.region || '',
+              region2: row.region2 || '',
+              shortname: row.shortname || '',
+              decade: parseInt(row.decade),
+            };
 
         // Debug first few rows
         if (index < 5) {
@@ -178,7 +178,7 @@ export const calculateGrowth = (data: DataRow[], startYear: number = 1980) => {
   
   return data.map(row => ({
     ...row,
-    middle_40_growth: ((row.middle_40 - baseData.middle_40) / baseData.middle_40) * 100,
+    top_01_growth: ((row.top_01 - baseData.top_01) / baseData.top_01) * 100,
     bottom_50_growth: ((row.bottom_50 - baseData.bottom_50) / baseData.bottom_50) * 100,
     top_10_growth: ((row.top_10 - baseData.top_10) / baseData.top_10) * 100,
     top_1_growth: ((row.top_1 - baseData.top_1) / baseData.top_1) * 100,

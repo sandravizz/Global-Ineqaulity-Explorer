@@ -3,7 +3,7 @@ import { Check } from 'lucide-react';
 
 interface SelectedGroups {
   top10: boolean;
-  middle40: boolean;
+  top01: boolean;
   bottom50: boolean;
   total: boolean;
 }
@@ -25,14 +25,14 @@ export function DataTable({ selectedGroups, setSelectedGroups }: DataTableProps)
       interactive: true,
     },
     {
-      id: 'middle40',
-      label: 'Middle 40%',
-      growth: '-14.3%',
-      gain: '-$4.2k',
-      color: 'bg-blue-500',
-      selected: selectedGroups.middle40,
-      interactive: true,
-    },
+       id: 'top01',
+       label: 'Top 0.1%',
+       growth: '-14.3%',
+       gain: '-$4.2k',
+       color: 'bg-blue-500',
+       selected: selectedGroups.top01,
+       interactive: true,
+     },
     {
       id: 'bottom50',
       label: 'Bottom 50%',
@@ -54,18 +54,18 @@ export function DataTable({ selectedGroups, setSelectedGroups }: DataTableProps)
   ];
 
   const handleToggle = (id: string, interactive: boolean) => {
-    if (!interactive) return;
-    
-    if (id === 'top10') {
-      setSelectedGroups({ ...selectedGroups, top10: !selectedGroups.top10 });
-    } else if (id === 'middle40') {
-      setSelectedGroups({ ...selectedGroups, middle40: !selectedGroups.middle40 });
-    } else if (id === 'bottom50') {
-      setSelectedGroups({ ...selectedGroups, bottom50: !selectedGroups.bottom50 });
-    } else if (id === 'total') {
-      setSelectedGroups({ ...selectedGroups, total: !selectedGroups.total });
-    }
-  };
+     if (!interactive) return;
+     
+     if (id === 'top10') {
+       setSelectedGroups({ ...selectedGroups, top10: !selectedGroups.top10 });
+     } else if (id === 'top01') {
+       setSelectedGroups({ ...selectedGroups, top01: !selectedGroups.top01 });
+     } else if (id === 'bottom50') {
+       setSelectedGroups({ ...selectedGroups, bottom50: !selectedGroups.bottom50 });
+     } else if (id === 'total') {
+       setSelectedGroups({ ...selectedGroups, total: !selectedGroups.total });
+     }
+   };
 
   return (
     <div className="w-80 bg-[#020b0c] rounded-lg p-4 border border-[#0a6167]">

@@ -8,7 +8,7 @@ import { Navigation } from "@/app/components/Navigation";
 export default function App() {
   const [selectedGroups, setSelectedGroups] = useState({
     top10: true,
-    middle40: true,
+    top01: true,
     bottom50: true,
     total: true,
   });
@@ -40,7 +40,6 @@ export default function App() {
           </p>
         </div>
         <FilterPanel filters={filters} setFilters={setFilters} />
-        <div className="flex">
           <div className="flex-1">
             <MainChart
               selectedGroups={selectedGroups}
@@ -52,7 +51,6 @@ export default function App() {
               setSelectedGroups={setSelectedGroups}
             /> */}
           </div>
-        </div>
       </div>
     </div>
   );

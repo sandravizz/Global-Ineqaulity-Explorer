@@ -4,7 +4,7 @@ import { filterData, DataRow } from "@/data/inequalityData";
 
 interface SelectedGroups {
   top10: boolean;
-  middle40: boolean;
+  top01: boolean;
   bottom50: boolean;
   total: boolean;
 }
@@ -51,7 +51,7 @@ export function MainChart({
         aggregatedData.set(row.year, { ...row });
       } else {
         // Average the values
-        existing.middle_40 = (existing.middle_40 + row.middle_40) / 2;
+        existing.top_01 = (existing.top_01 + row.top_01) / 2;
         existing.bottom_50 = (existing.bottom_50 + row.bottom_50) / 2;
         existing.top_10 = (existing.top_10 + row.top_10) / 2;
         existing.top_1 = (existing.top_1 + row.top_1) / 2;
@@ -68,33 +68,33 @@ export function MainChart({
     const endYear = chartData[chartData.length - 1].year;
 
     // Transform data based on y-axis selection
-    const transformedData = chartData.map((d) => {
-      if (filters.yAxis === "Income Share") {
-        return {
-          ...d,
-          top_10: d.top_10 * 100,
-          middle_40: d.middle_40 * 100,
-          bottom_50: d.bottom_50 * 100,
-          top_1: d.top_1 * 100,
-        };
-      } else if (filters.yAxis === "Real Income Growth") {
-        return {
-          ...d,
-          top_10: d.top_10 * 100,
-          middle_40: d.middle_40 * 100,
-          bottom_50: d.bottom_50 * 100,
-          top_1: d.top_1 * 100,
-        };
-      } else {
-        return {
-          ...d,
-          top_10: d.top_10 * 100,
-          middle_40: d.middle_40 * 100,
-          bottom_50: d.bottom_50 * 100,
-          top_1: d.top_1 * 100,
-        };
-      }
-    });
+     const transformedData = chartData.map((d) => {
+       if (filters.yAxis === "Income Share") {
+         return {
+           ...d,
+           top_10: d.top_10 * 100,
+           top_01: d.top_01 * 100,
+           bottom_50: d.bottom_50 * 100,
+           top_1: d.top_1 * 100,
+         };
+       } else if (filters.yAxis === "Real Income Growth") {
+         return {
+           ...d,
+           top_10: d.top_10 * 100,
+           top_01: d.top_01 * 100,
+           bottom_50: d.bottom_50 * 100,
+           top_1: d.top_1 * 100,
+         };
+       } else {
+         return {
+           ...d,
+           top_10: d.top_10 * 100,
+           top_01: d.top_01 * 100,
+           bottom_50: d.bottom_50 * 100,
+           top_1: d.top_1 * 100,
+         };
+       }
+     });
 
     // Get container dimensions
     const containerWidth = containerRef.current.offsetWidth;
@@ -142,11 +142,11 @@ export function MainChart({
       .y((d) => y(d.top_10))
       .curve(d3.curveMonotoneX);
 
-    const lineMiddle40 = d3
-      .line<DataRow>()
-      .x((d) => x(d.year))
-      .y((d) => y(d.middle_40))
-      .curve(d3.curveMonotoneX);
+    const lineTop01 = d3
+       .line<DataRow>()
+       .x((d) => x(d.year))
+       .y((d) => y(d.top_01))
+       .curve(d3.curveMonotoneX);
 
     const lineBottom50 = d3
       .line<DataRow>()
@@ -181,15 +181,15 @@ export function MainChart({
         .attr("stroke-width", 2)
         .attr("d", lineTop10);
     }
-    if (selectedGroups.middle40) {
-      svg
-        .append("path")
-        .datum(transformedData)
-        .attr("fill", "none")
-        .attr("stroke", "#8af8cc")
-        .attr("stroke-width", 2.5)
-        .attr("d", lineMiddle40);
-    }
+    if (selectedGroups.top01) {
+       svg
+         .append("path")
+         .datum(transformedData)
+         .attr("fill", "none")
+         .attr("stroke", "#8af8cc")
+         .attr("stroke-width", 2.5)
+         .attr("d", lineTop01);
+     }
     if (selectedGroups.bottom50) {
       svg
         .append("path")
@@ -245,14 +245,14 @@ export function MainChart({
               .attr("r", 4.5)
               .attr("fill", "#00ff9c");
           }
-          if (selectedGroups.middle40) {
-            focusCircles
-              .append("circle")
-              .attr("cx", x(d.year))
-              .attr("cy", y(d.middle_40))
-              .attr("r", 4.5)
-              .attr("fill", "#8af8cc");
-          }
+          if (selectedGroups.top01) {
+             focusCircles
+               .append("circle")
+               .attr("cx", x(d.year))
+               .attr("cy", y(d.top_01))
+               .attr("r", 4.5)
+               .attr("fill", "#8af8cc");
+           }
           if (selectedGroups.bottom50) {
             focusCircles
               .append("circle")
@@ -290,8 +290,8 @@ export function MainChart({
                 color: "#bdea00",
               },
               {
-                group: "Middle 40%",
-                value: d.middle_40.toFixed(1) + "%",
+                group: "Top 0.1%",
+                value: d.top_01.toFixed(1) + "%",
                 color: "#8af8cc",
               },
        
@@ -397,13 +397,13 @@ export function MainChart({
           onClick={() =>
             setSelectedGroups({
               ...selectedGroups,
-              middle40: !selectedGroups.middle40,
+              top01: !selectedGroups.top01,
             })
           }
           className="flex items-center gap-2 hover:opacity-80"
         >
           <span
-            className={`w-3 h-3 rounded-full ${selectedGroups.middle40 ? "bg-[#8af8cc]" : "bg-gray-600"}`}
+            className={`w-3 h-3 rounded-full ${selectedGroups.top01 ? "bg-[#8af8cc]" : "bg-gray-600"}`}
           ></span>
           Top 0.1%
         </button>
@@ -428,15 +428,9 @@ export function MainChart({
             }}
           >
             <div className="text-xs text-gray-300 mb-2">
-              {tooltipData.year} | Real Factor Income Growth
+              {tooltipData.year} 
             </div>
             <table className="text-xs">
-              <thead>
-                <tr className="text-gray-400 border-b border-gray-600">
-                  <th className="text-left pb-1 pr-4">Group</th>
-                  <th className="text-right pb-1 pr-4">Income Growth</th>
-                </tr>
-              </thead>
               <tbody>
                 {tooltipData.values.map((row, i) => (
                   <tr
@@ -444,15 +438,15 @@ export function MainChart({
                     className="border-b border-gray-700 last:border-0"
                   >
                     <td className="py-1.5 pr-4">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-3">
                         <span
                           className="w-2 h-2 rounded-full"
                           style={{ backgroundColor: row.color }}
                         ></span>
-                        <span className="text-white">{row.group}</span>
+                        <span className="text-[#e5e6ed]">{row.group}</span>
                       </div>
                     </td>
-                    <td className="text-right py-1.5 pr-4 text-white">
+                    <td className="text-right py-1.5 pr-4 text-[#e5e6ed]">
                       {row.value}
                     </td>
                   </tr>
