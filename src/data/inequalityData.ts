@@ -2,8 +2,6 @@
 // @ts-ignore - Vite handles raw imports
 import csvString from '../data/data_diff.csv?raw';
 
-
-
 // Keep existing DataRow interface for backward compatibility
 export interface DataRow {
   year: number;

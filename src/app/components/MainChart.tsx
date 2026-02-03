@@ -65,7 +65,7 @@ export function MainChart({ selectedGroups, setSelectedGroups, filters }: MainCh
     if (chartData.length === 0) return;
 
     // Transform data based on y-axis selection
-    const transformedData = chartData.map((d, i) => {
+    const transformedData = chartData.map((d) => {
       const baseData = chartData[0]; // Use first year as base
       
       if (filters.yAxis === 'Income Share') {
@@ -220,7 +220,7 @@ export function MainChart({ selectedGroups, setSelectedGroups, filters }: MainCh
 
     const focusCircles = svg.append('g');
 
-    const overlay = svg
+   svg
       .append('rect')
       .attr('width', width)
       .attr('height', height)
@@ -283,7 +283,6 @@ export function MainChart({ selectedGroups, setSelectedGroups, filters }: MainCh
           }
 
           // Update tooltip data
-          const baseIncome = 25000;
           setTooltipData({
             year: `${d.year}`,
             values: [
