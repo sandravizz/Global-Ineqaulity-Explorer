@@ -18,7 +18,7 @@ export function Navigation() {
           onClick={() => setActiveTab(tab.id)}
           className={`flex items-center gap-2 px-3 py-2 text-sm transition-colors ${
             activeTab === tab.id
-              ? 'text-white border-b-2 border-[#4c8ffe]'
+              ? 'text-white border-b-2 border-[#0a6167]'
               : 'text-gray-500 hover:text-gray-300'
           }`}
         >

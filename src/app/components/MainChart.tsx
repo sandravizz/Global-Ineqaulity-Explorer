@@ -98,7 +98,7 @@ export function MainChart({
 
     // Get container dimensions
     const containerWidth = containerRef.current.offsetWidth;
-    const margin = { top: 20, right: 20, bottom: 60, left: 70 };
+    const margin = { top: 20, right: 200, bottom: 60, left: 50 };
     const width = containerWidth - margin.left - margin.right;
     const height = 500 - margin.top - margin.bottom;
 
@@ -347,7 +347,7 @@ export function MainChart({
   return (
     <div className="relative">
       {/* Legend */}
-      <div className="flex gap-6 mb-4 text-sm">
+      <div className="flex gap-7 px-2 mt-10 mb-2 text-sm">
         <button
           onClick={() =>
             setSelectedGroups({
@@ -420,7 +420,7 @@ export function MainChart({
         {/* Tooltip */}
         {tooltipData && (
           <div
-            className="absolute pointer-events-none bg-[#020b0c] border border-gray-600 rounded-lg p-3 shadow-xl"
+            className="absolute pointer-events-none bg-[#020b0c] border border-[#0a6167] rounded-lg p-3 shadow-xl"
             style={{
               left: tooltipPosition.x + 20,
               top: tooltipPosition.y - 100,
@@ -435,7 +435,7 @@ export function MainChart({
                 {tooltipData.values.map((row, i) => (
                   <tr
                     key={i}
-                    className="border-b border-gray-700 last:border-0"
+                    className="border-b border-[#0a6167] last:border-0"
                   >
                     <td className="py-1.5 pr-4">
                       <div className="flex items-center gap-3">
