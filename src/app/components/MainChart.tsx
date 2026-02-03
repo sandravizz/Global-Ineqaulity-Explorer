@@ -69,8 +69,6 @@ export function MainChart({
 
     // Transform data based on y-axis selection
     const transformedData = chartData.map((d) => {
-      const baseData = chartData[0]; // Use first year as base
-
       if (filters.yAxis === "Income Share") {
         return {
           ...d,
@@ -82,22 +80,18 @@ export function MainChart({
       } else if (filters.yAxis === "Real Income Growth") {
         return {
           ...d,
-          top_10: ((d.top_10 - baseData.top_10) / baseData.top_10) * 100,
-          middle_40:
-            ((d.middle_40 - baseData.middle_40) / baseData.middle_40) * 100,
-          bottom_50:
-            ((d.bottom_50 - baseData.bottom_50) / baseData.bottom_50) * 100,
-          top_1: ((d.top_1 - baseData.top_1) / baseData.top_1) * 100,
+          top_10: d.top_10 * 100,
+          middle_40: d.middle_40 * 100,
+          bottom_50: d.bottom_50 * 100,
+          top_1: d.top_1 * 100,
         };
       } else {
-        // Income Level
-        const baseIncome = 50000;
         return {
           ...d,
-          top_10: baseIncome * d.top_10 * 3,
-          middle_40: baseIncome * d.middle_40 * 2,
-          bottom_50: baseIncome * d.bottom_50 * 1.5,
-          top_1: baseIncome * d.top_1 * 5,
+          top_10: d.top_10 * 100,
+          middle_40: d.middle_40 * 100,
+          bottom_50: d.bottom_50 * 100,
+          top_1: d.top_1 * 100,
         };
       }
     });
@@ -132,12 +126,11 @@ export function MainChart({
       yDomain = [0, 100];
       yTickFormat = (d) => d + "%";
     } else if (filters.yAxis === "Real Income Growth") {
-      yDomain = [-50, 150];
+      yDomain = [0, 100];
       yTickFormat = (d) => d + "%";
     } else {
-      // Income Level
-      yDomain = [0, 200000];
-      yTickFormat = (d) => "$" + d / 1000 + "k";
+      yDomain = [0, 100];
+      yTickFormat = (d) => d + "%";
     }
 
     const y = d3.scaleLinear().domain(yDomain).range([height, 0]);
@@ -168,6 +161,17 @@ export function MainChart({
       .curve(d3.curveMonotoneX);
 
     // Draw lines
+
+    if (selectedGroups.total) {
+      svg
+        .append("path")
+        .datum(transformedData)
+        .attr("fill", "none")
+        .attr("stroke", "#bdea00")
+        .attr("stroke-width", 2.5)
+        // .attr("stroke-dasharray", "5,5")
+        .attr("d", lineTotal);
+    }
     if (selectedGroups.top10) {
       svg
         .append("path")
@@ -177,17 +181,15 @@ export function MainChart({
         .attr("stroke-width", 2)
         .attr("d", lineTop10);
     }
-
     if (selectedGroups.middle40) {
       svg
         .append("path")
         .datum(transformedData)
         .attr("fill", "none")
-        .attr("stroke", "#3b82f6")
+        .attr("stroke", "#8af8cc")
         .attr("stroke-width", 2.5)
         .attr("d", lineMiddle40);
     }
-
     if (selectedGroups.bottom50) {
       svg
         .append("path")
@@ -196,17 +198,6 @@ export function MainChart({
         .attr("stroke", "#ff00b7")
         .attr("stroke-width", 2.5)
         .attr("d", lineBottom50);
-    }
-
-    if (selectedGroups.total) {
-      svg
-        .append("path")
-        .datum(transformedData)
-        .attr("fill", "none")
-        .attr("stroke", "#fff")
-        .attr("stroke-width", 2.5)
-        .attr("stroke-dasharray", "5,5")
-        .attr("d", lineTotal);
     }
 
     // Add invisible overlay for mouse tracking
@@ -251,7 +242,7 @@ export function MainChart({
               .append("circle")
               .attr("cx", x(d.year))
               .attr("cy", y(d.top_10))
-              .attr("r", 4)
+              .attr("r", 4.5)
               .attr("fill", "#00ff9c");
           }
           if (selectedGroups.middle40) {
@@ -259,15 +250,15 @@ export function MainChart({
               .append("circle")
               .attr("cx", x(d.year))
               .attr("cy", y(d.middle_40))
-              .attr("r", 4)
-              .attr("fill", "#3b82f6");
+              .attr("r", 4.5)
+              .attr("fill", "#8af8cc");
           }
           if (selectedGroups.bottom50) {
             focusCircles
               .append("circle")
               .attr("cx", x(d.year))
               .attr("cy", y(d.bottom_50))
-              .attr("r", 4)
+              .attr("r", 4.5)
               .attr("fill", "#ff00b7");
           }
           if (selectedGroups.total) {
@@ -275,34 +266,36 @@ export function MainChart({
               .append("circle")
               .attr("cx", x(d.year))
               .attr("cy", y(d.top_1))
-              .attr("r", 4)
-              .attr("fill", "#fff");
+              .attr("r", 4.5)
+              .attr("fill", "#bdea00");
           }
 
           // Update tooltip data
           setTooltipData({
             year: `${d.year}`,
             values: [
-              {
-                group: "Top 10%",
-                value: d.top_10.toFixed(1) + "%",
-                color: "#00ff9c",
-              },
-              {
-                group: "Middle 40%",
-                value: d.middle_40.toFixed(1) + "%",
-                color: "#3b82f6",
-              },
-              {
+                     {
                 group: "Bottom 50%",
                 value: d.bottom_50.toFixed(1) + "%",
                 color: "#ff00b7",
               },
               {
+                group: "Top 10%",
+                value: d.top_10.toFixed(1) + "%",
+                color: "#00ff9c",
+              },
+                   {
                 group: "Top 1%",
                 value: d.top_1.toFixed(1) + "%",
-                color: "#fff",
+                color: "#bdea00",
               },
+              {
+                group: "Middle 40%",
+                value: d.middle_40.toFixed(1) + "%",
+                color: "#8af8cc",
+              },
+       
+         
             ],
           });
 
@@ -321,20 +314,20 @@ export function MainChart({
       });
 
     // Add axes
-svg
-  .append("g")
-  .attr("transform", `translate(0,${height})`)
-  .call(
-    d3
-      .axisBottom(x)
-      .tickFormat((d) => d.toString())
-      .tickSize(0)
-      .tickPadding(20)
-      .ticks(4),
-  )
-  .call((g) => g.select(".domain").remove())
-  .style("color", "#d7dcf0")
-  .style("font-size", "12px");
+    svg
+      .append("g")
+      .attr("transform", `translate(0,${height})`)
+      .call(
+        d3
+          .axisBottom(x)
+          .tickFormat((d) => d.toString())
+          .tickSize(0)
+          .tickPadding(20)
+          .ticks(4),
+      )
+      .call((g) => g.select(".domain").remove())
+      .style("color", "#d7dcf0")
+      .style("font-size", "12px");
 
     svg
       .append("g")
@@ -346,7 +339,7 @@ svg
           .tickPadding(20)
           .ticks(4),
       )
-        .call((g) => g.select(".domain").remove())
+      .call((g) => g.select(".domain").remove())
       .style("color", "#d7dcf0")
       .style("font-size", "12px");
   }, [selectedGroups, filters]);
@@ -355,34 +348,6 @@ svg
     <div className="relative">
       {/* Legend */}
       <div className="flex gap-6 mb-4 text-sm">
-        <button
-          onClick={() =>
-            setSelectedGroups({
-              ...selectedGroups,
-              top10: !selectedGroups.top10,
-            })
-          }
-          className="flex items-center gap-2 hover:opacity-80"
-        >
-          <span
-            className={`w-3 h-3 rounded-full ${selectedGroups.top10 ? "bg-[#00ff9c]" : "bg-gray-600"}`}
-          ></span>
-          Top 10%
-        </button>
-        <button
-          onClick={() =>
-            setSelectedGroups({
-              ...selectedGroups,
-              middle40: !selectedGroups.middle40,
-            })
-          }
-          className="flex items-center gap-2 hover:opacity-80"
-        >
-          <span
-            className={`w-3 h-3 rounded-full ${selectedGroups.middle40 ? "bg-blue-500" : "bg-gray-600"}`}
-          ></span>
-          Middle 40%
-        </button>
         <button
           onClick={() =>
             setSelectedGroups({
@@ -401,18 +366,46 @@ svg
           onClick={() =>
             setSelectedGroups({
               ...selectedGroups,
+              top10: !selectedGroups.top10,
+            })
+          }
+          className="flex items-center gap-2 hover:opacity-80"
+        >
+          <span
+            className={`w-3 h-3 rounded-full ${selectedGroups.top10 ? "bg-[#00ff9c]" : "bg-gray-600"}`}
+          ></span>
+          Top 10%
+        </button>
+        <button
+          onClick={() =>
+            setSelectedGroups({
+              ...selectedGroups,
               total: !selectedGroups.total,
             })
           }
           className="flex items-center gap-2 hover:opacity-80"
         >
           <span
-            className={`w-3 h-3 rounded-full ${selectedGroups.total ? "bg-white" : "bg-gray-600"}`}
+            className={`w-3 h-3 rounded-full ${selectedGroups.total ? "bg-[#bdea00]" : "bg-gray-600"}`}
             style={{
               border: selectedGroups.total ? "1px dashed white" : "none",
             }}
           ></span>
           Top 1%
+        </button>
+        <button
+          onClick={() =>
+            setSelectedGroups({
+              ...selectedGroups,
+              middle40: !selectedGroups.middle40,
+            })
+          }
+          className="flex items-center gap-2 hover:opacity-80"
+        >
+          <span
+            className={`w-3 h-3 rounded-full ${selectedGroups.middle40 ? "bg-[#8af8cc]" : "bg-gray-600"}`}
+          ></span>
+          Top 0.1%
         </button>
       </div>
 
