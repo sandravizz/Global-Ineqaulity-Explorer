@@ -23,7 +23,7 @@ export default function App() {
   });
 
   return (
-    <div className="min-h-screen bg-[#0a1628] text-white">
+    <div className="min-h-screen bg-[#020b0c] text-white">
       {/* Header */}
       <header className="border-b border-gray-700 bg-[#0d1f3a]">
         <div className="max-w-[1600px] mx-auto px-6 py-4 flex items-center justify-between">
