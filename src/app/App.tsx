@@ -10,7 +10,7 @@ export default function App() {
     top10: true,
     top01: true,
     bottom50: true,
-    total: true,
+    top_1: true,
   });
 
   const [filters, setFilters] = useState({

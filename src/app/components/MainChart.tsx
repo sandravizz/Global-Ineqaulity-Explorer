@@ -6,7 +6,7 @@ interface SelectedGroups {
   top10: boolean;
   top01: boolean;
   bottom50: boolean;
-  total: boolean;
+  top_1: boolean;
 }
 
 interface MainChartProps {
@@ -154,7 +154,7 @@ export function MainChart({
       .y((d) => y(d.bottom_50))
       .curve(d3.curveMonotoneX);
 
-    const lineTotal = d3
+    const lineTop1 = d3
       .line<DataRow>()
       .x((d) => x(d.year))
       .y((d) => y(d.top_1))
@@ -162,7 +162,7 @@ export function MainChart({
 
     // Draw lines
 
-    if (selectedGroups.total) {
+    if (selectedGroups.top_1) {
       svg
         .append("path")
         .datum(transformedData)
@@ -170,7 +170,7 @@ export function MainChart({
         .attr("stroke", "#bdea00")
         .attr("stroke-width", 2.5)
         // .attr("stroke-dasharray", "5,5")
-        .attr("d", lineTotal);
+        .attr("d", lineTop1);
     }
     if (selectedGroups.top10) {
       svg
@@ -261,7 +261,7 @@ export function MainChart({
               .attr("r", 4.5)
               .attr("fill", "#ff00b7");
           }
-          if (selectedGroups.total) {
+          if (selectedGroups.top_1) {
             focusCircles
               .append("circle")
               .attr("cx", x(d.year))
@@ -380,15 +380,15 @@ export function MainChart({
           onClick={() =>
             setSelectedGroups({
               ...selectedGroups,
-              total: !selectedGroups.total,
+              top_1: !selectedGroups.top_1,
             })
           }
           className="flex items-center gap-2 hover:opacity-80"
         >
           <span
-            className={`w-3 h-3 rounded-full ${selectedGroups.total ? "bg-[#bdea00]" : "bg-gray-600"}`}
+            className={`w-3 h-3 rounded-full ${selectedGroups.top_1 ? "bg-[#bdea00]" : "bg-gray-600"}`}
             style={{
-              border: selectedGroups.total ? "1px dashed white" : "none",
+              border: selectedGroups.top_1 ? "1px dashed white" : "none",
             }}
           ></span>
           Top 1%

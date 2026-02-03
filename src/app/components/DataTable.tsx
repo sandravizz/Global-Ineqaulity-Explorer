@@ -5,7 +5,7 @@ interface SelectedGroups {
   top10: boolean;
   top01: boolean;
   bottom50: boolean;
-  total: boolean;
+  top_1: boolean;
 }
 
 interface DataTableProps {
@@ -43,12 +43,12 @@ export function DataTable({ selectedGroups, setSelectedGroups }: DataTableProps)
       interactive: true,
     },
     {
-      id: 'total',
+      id: 'top_1',
       label: 'Top 1%',
       growth: '175.0%',
       gain: '$1.4M',
       color: 'bg-white',
-      selected: selectedGroups.total,
+      selected: selectedGroups.top_1,
       interactive: true,
     },
   ];
@@ -62,8 +62,8 @@ export function DataTable({ selectedGroups, setSelectedGroups }: DataTableProps)
        setSelectedGroups({ ...selectedGroups, top01: !selectedGroups.top01 });
      } else if (id === 'bottom50') {
        setSelectedGroups({ ...selectedGroups, bottom50: !selectedGroups.bottom50 });
-     } else if (id === 'total') {
-       setSelectedGroups({ ...selectedGroups, total: !selectedGroups.total });
+     } else if (id === 'top_1') {
+       setSelectedGroups({ ...selectedGroups, top_1: !selectedGroups.top_1 });
      }
    };
 
