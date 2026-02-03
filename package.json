@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "dev": "vite",
-    "deploy": "npm run build && git add dist -f && git commit -m 'Deploy' && git push origin `git subtree split --prefix dist HEAD`:gh-pages --force"
+    "dev": "vite"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
@@ -90,8 +89,5 @@
       "vite": "6.3.5"
     }
   }
-  "scripts": {
-  "build": "vite build",
-  "deploy": "npm run build && git add dist -f && git commit -m 'Deploy' && git push origin `git subtree split --prefix dist HEAD`:gh-pages --force"
-}
+  
 }
