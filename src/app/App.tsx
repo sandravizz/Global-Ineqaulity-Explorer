@@ -2,7 +2,6 @@ import { useState } from "react";
 import { TrendingUp } from "lucide-react";
 import { FilterPanel } from "@/app/components/FilterPanel";
 import { MainChart } from "@/app/components/MainChart";
-import { DataTable } from "@/app/components/DataTable";
 import { Navigation } from "@/app/components/Navigation";
 
 export default function App() {
@@ -37,12 +36,6 @@ export default function App() {
           <div className="flex-1">
             <FilterPanel filters={filters} setFilters={setFilters} />
           </div>
-          {/* <div>
-            <DataTable
-              selectedGroups={selectedGroups}
-              setSelectedGroups={setSelectedGroups}
-            />
-          </div> */}
         </div>
         <MainChart
           selectedGroups={selectedGroups}

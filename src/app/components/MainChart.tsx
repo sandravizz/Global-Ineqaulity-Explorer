@@ -68,30 +68,12 @@ export function MainChart({
     const endYear = chartData[chartData.length - 1].year;
 
     // Transform data based on y-axis selection
-    const transformedData = chartData.map((d) => {
-      if (filters.yAxis === "Income Share") {
-        return {
-          ...d,
-          top_10: d.top_10 * 100,
-          bottom_50: d.bottom_50 * 100,
-          top_1: d.top_1 * 100,
-        };
-      } else if (filters.yAxis === "Real Income Growth") {
-        return {
-          ...d,
-          top_10: d.top_10 * 100,
-          bottom_50: d.bottom_50 * 100,
-          top_1: d.top_1 * 100,
-        };
-      } else {
-        return {
-          ...d,
-          top_10: d.top_10 * 100,
-          bottom_50: d.bottom_50 * 100,
-          top_1: d.top_1 * 100,
-        };
-      }
-    });
+    const transformedData = chartData.map((d) => ({
+      ...d,
+      top_10: d.top_10 * 100,
+      bottom_50: d.bottom_50 * 100,
+      top_1: d.top_1 * 100,
+    }));
 
     // Use responsive dimensions from hook
     const { containerWidth, chartHeight, margins } = chartDims;
@@ -115,20 +97,9 @@ export function MainChart({
     // Scales
     const x = d3.scaleLinear().domain([startYear, endYear]).range([0, width]);
 
-    // Set y-axis domain based on y-axis type
-    let yDomain: [number, number];
-    let yTickFormat: (d: any) => string;
-
-    if (filters.yAxis === "Income Share") {
-      yDomain = [0, 100];
-      yTickFormat = (d) => d + "%";
-    } else if (filters.yAxis === "Real Income Growth") {
-      yDomain = [0, 100];
-      yTickFormat = (d) => d + "%";
-    } else {
-      yDomain = [0, 100];
-      yTickFormat = (d) => d + "%";
-    }
+    // Set y-axis domain and format
+    const yDomain: [number, number] = [0, 100];
+    const yTickFormat = (d: any) => d + "%";
 
     const y = d3.scaleLinear().domain(yDomain).range([height, 0]);
 
@@ -156,12 +127,11 @@ export function MainChart({
     if (selectedGroups.top_1) {
       svg
         .append("path")
-        .datum(transformedData)
-        .attr("fill", "none")
-        .attr("stroke", "#bdea00")
-        .attr("stroke-width", 2.5)
-        // .attr("stroke-dasharray", "5,5")
-        .attr("d", lineTop1);
+          .datum(transformedData)
+          .attr("fill", "none")
+          .attr("stroke", "#bdea00")
+          .attr("stroke-width", 2.5)
+          .attr("d", lineTop1);
     }
     if (selectedGroups.top10) {
       svg
@@ -248,7 +218,7 @@ export function MainChart({
           setTooltipData({
             year: `${d.year}`,
             values: [
-                     {
+              {
                 group: "Bottom 50%",
                 value: d.bottom_50.toFixed(1) + "%",
                 color: "#ff00b7",
@@ -258,7 +228,7 @@ export function MainChart({
                 value: d.top_10.toFixed(1) + "%",
                 color: "#00ff9c",
               },
-                   {
+              {
                 group: "Top 1%",
                 value: d.top_1.toFixed(1) + "%",
                 color: "#bdea00",
@@ -277,7 +247,10 @@ export function MainChart({
 
           // Prevent right overflow
           if (tooltipX + tooltipWidth > rect.width) {
-            tooltipX = Math.max(10, event.clientX - rect.left - tooltipWidth - 20);
+            tooltipX = Math.max(
+              10,
+              event.clientX - rect.left - tooltipWidth - 20,
+            );
           }
 
           // Prevent top overflow
@@ -287,7 +260,10 @@ export function MainChart({
 
           // Prevent bottom overflow
           if (tooltipY + tooltipHeight > rect.height) {
-            tooltipY = Math.max(10, event.clientY - rect.top - tooltipHeight - 20);
+            tooltipY = Math.max(
+              10,
+              event.clientY - rect.top - tooltipHeight - 20,
+            );
           }
 
           setTooltipPosition({
@@ -331,7 +307,7 @@ export function MainChart({
       .call((g) => g.select(".domain").remove())
       .style("color", "#d7dcf0")
       .style("font-size", chartDims.tickFontSize);
-    }, [selectedGroups, filters, chartDims]);
+  }, [selectedGroups, filters, chartDims]);
 
   const isMobile = chartDims.containerWidth < 640;
 
