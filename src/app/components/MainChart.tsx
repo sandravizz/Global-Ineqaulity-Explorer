@@ -334,11 +334,10 @@ export function MainChart({
     <div className="relative">
       {/* Legend */}
       <div
-        className={`px-2 mt-6 sm:mt-5 mb-2 ${
-          isMobile
-            ? "flex flex-col gap-3"
-            : `flex gap-${chartDims.legendGap} text-${chartDims.legendTextSize}`
-        } ${chartDims.legendTextSize}`}
+        className={`px-2 mt-6 sm:mt-5 mb-2 flex ${chartDims.legendTextSize}`}
+        style={
+          isMobile ? { gap: "28px" } : { gap: `${chartDims.legendGap}px` }
+        }
       >
         <button
           onClick={() =>

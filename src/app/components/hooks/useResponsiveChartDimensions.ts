@@ -69,11 +69,11 @@ export const useResponsiveChartDimensions = (
             top: 18,
             right: 40,
             bottom: 100,
-            left: 40,
+            left: 50,
           },
           tickFontSize: '11px',
           tickPadding: 12,
-          legendGap: '5',
+          legendGap: '20',
           legendTextSize: 'text-sm',
         });
         return;
@@ -87,11 +87,11 @@ export const useResponsiveChartDimensions = (
           top: 20,
           right: 50,
           bottom: 50,
-          left: 50,
+          left: 60,
         },
         tickFontSize: '12px',
         tickPadding: 20,
-        legendGap: '7',
+        legendGap: '20',
         legendTextSize: 'text-sm',
       });
     };
