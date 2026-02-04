@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { filterData, DataRow } from "@/data/inequalityData";
+import { useResponsiveChartDimensions } from "./hooks/useResponsiveChartDimensions";
 
 interface SelectedGroups {
   top10: boolean;
@@ -32,6 +33,7 @@ export function MainChart({
   const containerRef = useRef<HTMLDivElement>(null);
   const [tooltipData, setTooltipData] = useState<TooltipData | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const chartDims = useResponsiveChartDimensions(containerRef);
 
   useEffect(() => {
     if (!svgRef.current || !containerRef.current) return;
@@ -66,49 +68,49 @@ export function MainChart({
     const endYear = chartData[chartData.length - 1].year;
 
     // Transform data based on y-axis selection
-     const transformedData = chartData.map((d) => {
-       if (filters.yAxis === "Income Share") {
-           return {
-             ...d,
-             top_10: d.top_10 * 100,
-             bottom_50: d.bottom_50 * 100,
-             top_1: d.top_1 * 100,
-           };
-         } else if (filters.yAxis === "Real Income Growth") {
-           return {
-             ...d,
-             top_10: d.top_10 * 100,
-             bottom_50: d.bottom_50 * 100,
-             top_1: d.top_1 * 100,
-           };
-         } else {
-           return {
-             ...d,
-             top_10: d.top_10 * 100,
-             bottom_50: d.bottom_50 * 100,
-             top_1: d.top_1 * 100,
-           };
-       }
-     });
+    const transformedData = chartData.map((d) => {
+      if (filters.yAxis === "Income Share") {
+        return {
+          ...d,
+          top_10: d.top_10 * 100,
+          bottom_50: d.bottom_50 * 100,
+          top_1: d.top_1 * 100,
+        };
+      } else if (filters.yAxis === "Real Income Growth") {
+        return {
+          ...d,
+          top_10: d.top_10 * 100,
+          bottom_50: d.bottom_50 * 100,
+          top_1: d.top_1 * 100,
+        };
+      } else {
+        return {
+          ...d,
+          top_10: d.top_10 * 100,
+          bottom_50: d.bottom_50 * 100,
+          top_1: d.top_1 * 100,
+        };
+      }
+    });
 
-    // Get container dimensions
-    const containerWidth = containerRef.current.offsetWidth;
-    const margin = { top: 20, right: 200, bottom: 60, left: 50 };
-    const width = containerWidth - margin.left - margin.right;
-    const height = 500 - margin.top - margin.bottom;
+    // Use responsive dimensions from hook
+    const { containerWidth, chartHeight, margins } = chartDims;
+    const width = containerWidth - margins.left - margins.right;
+    const height = chartHeight - margins.top - margins.bottom;
 
     // Clear previous content and reset SVG
     const svgElement = d3.select(svgRef.current);
     svgElement.selectAll("*").remove();
     svgElement
-      .attr("width", containerWidth)
-      .attr("height", 500)
-      .attr("viewBox", null)
-      .attr("preserveAspectRatio", null);
+      .attr("viewBox", `0 0 ${containerWidth} ${chartHeight}`)
+      .attr("preserveAspectRatio", "xMidYMid meet")
+      .style("max-width", "100%")
+      .style("height", "auto")
+      .style("display", "block");
 
     const svg = svgElement
       .append("g")
-      .attr("transform", `translate(${margin.left},${margin.top})`);
+      .attr("transform", `translate(${margins.left},${margins.top})`);
 
     // Scales
     const x = d3.scaleLinear().domain([startYear, endYear]).range([0, width]);
@@ -264,11 +266,33 @@ export function MainChart({
             ],
           });
 
-          // Position tooltip
+          // Position tooltip with boundary detection
           const rect = containerRef.current!.getBoundingClientRect();
+          let tooltipX = event.clientX - rect.left + 20;
+          let tooltipY = event.clientY - rect.top - 100;
+
+          // Tooltip approximate dimensions
+          const tooltipWidth = isMobile ? 140 : 180;
+          const tooltipHeight = 120;
+
+          // Prevent right overflow
+          if (tooltipX + tooltipWidth > rect.width) {
+            tooltipX = Math.max(10, event.clientX - rect.left - tooltipWidth - 20);
+          }
+
+          // Prevent top overflow
+          if (tooltipY < 10) {
+            tooltipY = event.clientY - rect.top + 20;
+          }
+
+          // Prevent bottom overflow
+          if (tooltipY + tooltipHeight > rect.height) {
+            tooltipY = Math.max(10, event.clientY - rect.top - tooltipHeight - 20);
+          }
+
           setTooltipPosition({
-            x: event.clientX - rect.left,
-            y: event.clientY - rect.top,
+            x: tooltipX,
+            y: tooltipY,
           });
         }
       })
@@ -287,12 +311,12 @@ export function MainChart({
           .axisBottom(x)
           .tickFormat((d) => d.toString())
           .tickSize(0)
-          .tickPadding(20)
+          .tickPadding(chartDims.tickPadding)
           .ticks(4),
       )
       .call((g) => g.select(".domain").remove())
       .style("color", "#d7dcf0")
-      .style("font-size", "12px");
+      .style("font-size", chartDims.tickFontSize);
 
     svg
       .append("g")
@@ -301,18 +325,26 @@ export function MainChart({
           .axisLeft(y)
           .tickFormat(yTickFormat)
           .tickSize(0)
-          .tickPadding(20)
+          .tickPadding(chartDims.tickPadding)
           .ticks(4),
       )
       .call((g) => g.select(".domain").remove())
       .style("color", "#d7dcf0")
-      .style("font-size", "12px");
-  }, [selectedGroups, filters]);
+      .style("font-size", chartDims.tickFontSize);
+    }, [selectedGroups, filters, chartDims]);
+
+  const isMobile = chartDims.containerWidth < 640;
 
   return (
     <div className="relative">
       {/* Legend */}
-      <div className="flex gap-7 px-2 mt-10 mb-2 text-sm">
+      <div
+        className={`px-2 mt-6 sm:mt-10 mb-2 ${
+          isMobile
+            ? "flex flex-col gap-3"
+            : `flex gap-${chartDims.legendGap} text-${chartDims.legendTextSize}`
+        } ${chartDims.legendTextSize}`}
+      >
         <button
           onClick={() =>
             setSelectedGroups({
@@ -320,12 +352,12 @@ export function MainChart({
               bottom50: !selectedGroups.bottom50,
             })
           }
-          className="flex items-center gap-2 hover:opacity-80"
+          className="flex items-center gap-2 hover:opacity-80 transition-opacity"
         >
           <span
-            className={`w-3 h-3 rounded-full ${selectedGroups.bottom50 ? "bg-[#ff00b7]" : "bg-gray-600"}`}
+            className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${selectedGroups.bottom50 ? "bg-[#ff00b7]" : "bg-gray-600"}`}
           ></span>
-          Bottom 50%
+          <span className="text-xs sm:text-sm">Bottom 50%</span>
         </button>
         <button
           onClick={() =>
@@ -334,70 +366,72 @@ export function MainChart({
               top10: !selectedGroups.top10,
             })
           }
-          className="flex items-center gap-2 hover:opacity-80"
+          className="flex items-center gap-2 hover:opacity-80 transition-opacity"
         >
           <span
-            className={`w-3 h-3 rounded-full ${selectedGroups.top10 ? "bg-[#00ff9c]" : "bg-gray-600"}`}
+            className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${selectedGroups.top10 ? "bg-[#00ff9c]" : "bg-gray-600"}`}
           ></span>
-          Top 10%
+          <span className="text-xs sm:text-sm">Top 10%</span>
         </button>
         <button
-           onClick={() =>
-             setSelectedGroups({
-               ...selectedGroups,
-               top_1: !selectedGroups.top_1,
-             })
-           }
-           className="flex items-center gap-2 hover:opacity-80"
-         >
-           <span
-             className={`w-3 h-3 rounded-full ${selectedGroups.top_1 ? "bg-[#bdea00]" : "bg-gray-600"}`}
-             style={{
-               border: selectedGroups.top_1 ? "1px dashed white" : "none",
-             }}
-           ></span>
-           Top 1%
-         </button>
-        </div>
+          onClick={() =>
+            setSelectedGroups({
+              ...selectedGroups,
+              top_1: !selectedGroups.top_1,
+            })
+          }
+          className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+        >
+          <span
+            className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${selectedGroups.top_1 ? "bg-[#bdea00]" : "bg-gray-600"}`}
+            style={{
+              border: selectedGroups.top_1 ? "1px dashed white" : "none",
+            }}
+          ></span>
+          <span className="text-xs sm:text-sm">Top 1%</span>
+        </button>
+      </div>
 
       {/* Chart */}
       <div
         ref={containerRef}
-        className="bg-[#020b0c] rounded-lg p-4 relative w-full"
-        style={{ maxWidth: "100%", overflow: "hidden" }}
+        className="bg-[#020b0c] rounded-lg p-3 sm:p-4 relative w-full overflow-hidden"
       >
-        <svg ref={svgRef} style={{ display: "block", maxWidth: "100%" }}></svg>
+        <svg ref={svgRef}></svg>
 
         {/* Tooltip */}
         {tooltipData && (
           <div
-            className="absolute pointer-events-none bg-[#020b0c] border border-[#0a6167] rounded-lg p-3 shadow-xl"
+            className="absolute pointer-events-none bg-[#020b0c] border border-[#0a6167] rounded-lg p-2 sm:p-3 shadow-xl text-xs sm:text-sm"
             style={{
-              left: tooltipPosition.x + 20,
-              top: tooltipPosition.y - 100,
+              left: `${tooltipPosition.x}px`,
+              top: `${tooltipPosition.y}px`,
               zIndex: 1000,
+              maxWidth: isMobile ? "140px" : "auto",
             }}
           >
-            <div className="text-xs text-gray-300 mb-2">
-              {tooltipData.year} 
+            <div className="text-gray-300 mb-1.5 sm:mb-2 font-semibold">
+              {tooltipData.year}
             </div>
-            <table className="text-xs">
+            <table className="text-xs sm:text-sm">
               <tbody>
                 {tooltipData.values.map((row, i) => (
                   <tr
                     key={i}
-                    className="border-b border-[#0a6167] last:border-0"
+                    className="border-b border-[#0a6167]/50 last:border-0"
                   >
-                    <td className="py-1.5 pr-4">
-                      <div className="flex items-center gap-3">
+                    <td className="py-1 sm:py-1.5 pr-2 sm:pr-4">
+                      <div className="flex items-center gap-2 sm:gap-3">
                         <span
-                          className="w-2 h-2 rounded-full"
+                          className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full flex-shrink-0"
                           style={{ backgroundColor: row.color }}
                         ></span>
-                        <span className="text-[#e5e6ed]">{row.group}</span>
+                        <span className="text-[#e5e6ed] whitespace-nowrap text-xs sm:text-sm">
+                          {row.group}
+                        </span>
                       </div>
                     </td>
-                    <td className="text-right py-1.5 pr-4 text-[#e5e6ed]">
+                    <td className="text-right py-1 sm:py-1.5 pl-1 sm:pl-4 text-[#e5e6ed] font-semibold">
                       {row.value}
                     </td>
                   </tr>
