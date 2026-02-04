@@ -25,7 +25,7 @@ export const useResponsiveChartDimensions = (
   const [dimensions, setDimensions] = useState<ChartDimensions>({
     containerWidth: 0,
     chartHeight: 500,
-    margins: { top: 20, right: 200, bottom: 60, left: 50 },
+    margins: { top: 20, right: 50, bottom: 20, left: 50 },
     tickFontSize: '12px',
     tickPadding: 20,
     legendGap: '7',
@@ -67,8 +67,8 @@ export const useResponsiveChartDimensions = (
           chartHeight: 400,
           margins: {
             top: 18,
-            right: 120,
-            bottom: 50,
+            right: 40,
+            bottom: 18,
             left: 40,
           },
           tickFontSize: '11px',
@@ -85,8 +85,8 @@ export const useResponsiveChartDimensions = (
         chartHeight: 500,
         margins: {
           top: 20,
-          right: 200,
-          bottom: 60,
+          right: 50,
+          bottom: 20,
           left: 50,
         },
         tickFontSize: '12px',

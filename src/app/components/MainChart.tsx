@@ -148,7 +148,8 @@ export function MainChart({
           .datum(transformedData)
           .attr("fill", "none")
           .attr("stroke", "#bdea00")
-          .attr("stroke-width", 2.5)
+          .attr("stroke-width", 1)
+          .attr("stroke-dasharray", "5,5")
           .attr("d", lineTop1);
     }
     if (selectedGroups.top10) {
