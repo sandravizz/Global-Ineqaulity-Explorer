@@ -30,33 +30,9 @@ export function FilterPanel({ filters, setFilters }: FilterPanelProps) {
   return (
     <div className="mb-6">
       <div className="grid grid-cols-12 gap-4 mb-4">
-        {/* Y-AXIS */}
-        <div className="col-span-2">
-          <label className="block text-xs text-gray-400 mb-2">Y-AXIS</label>
-          <select
-            value={filters.yAxis}
-            onChange={(e) => setFilters({ ...filters, yAxis: e.target.value })}
-            className="w-full bg-[#020b0c] border border-[#0a6167] rounded px-3 py-2 text-sm text-[#e5e6ed] focus:outline-none focus:border-blue-500"
-          >
-            <option>Income Share</option>
-            <option>Real Income Growth</option>
-            <option>Income Level</option>
-          </select>
-        </div>
 
-        {/* INCOME TYPE */}
-        <div className="col-span-2">
-          <label className="block text-xs text-gray-400 mb-2">INCOME TYPE</label>
-          <select
-            value={filters.incomeType}
-            onChange={(e) => setFilters({ ...filters, incomeType: e.target.value })}
-            className="w-full bg-[#020b0c] border border-[#0a6167] rounded px-3 py-2 text-sm text-[#e5e6ed] focus:outline-none focus:border-blue-500"
-          >
-            <option>Factor Income</option>
-            <option>Pre-tax Income</option>
-            <option>Post-tax Income</option>
-          </select>
-        </div>
+
+  
 
         {/* COUNTRY */}
         <div className="col-span-2">
