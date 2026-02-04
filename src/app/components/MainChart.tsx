@@ -122,6 +122,24 @@ export function MainChart({
       .y((d) => y(d.top_1))
       .curve(d3.curveMonotoneX);
 
+    // Area generator for fill between top10 and bottom50
+    const areaTop10Bottom50 = d3
+      .area<DataRow>()
+      .x((d) => x(d.year))
+      .y0((d) => y(d.bottom_50))
+      .y1((d) => y(d.top_10))
+      .curve(d3.curveMonotoneX);
+
+    // Draw area fill between top10 and bottom50
+    if (selectedGroups.top10 && selectedGroups.bottom50) {
+      svg
+        .append("path")
+        .datum(transformedData)
+        .attr("fill", "white")
+        .attr("fill-opacity", 0.12)
+        .attr("d", areaTop10Bottom50);
+    }
+
     // Draw lines
 
     if (selectedGroups.top_1) {
