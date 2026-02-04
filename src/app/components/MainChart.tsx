@@ -4,7 +4,6 @@ import { filterData, DataRow } from "@/data/inequalityData";
 
 interface SelectedGroups {
   top10: boolean;
-  top01: boolean;
   bottom50: boolean;
   top_1: boolean;
 }
@@ -51,7 +50,6 @@ export function MainChart({
         aggregatedData.set(row.year, { ...row });
       } else {
         // Average the values
-        existing.top_01 = (existing.top_01 + row.top_01) / 2;
         existing.bottom_50 = (existing.bottom_50 + row.bottom_50) / 2;
         existing.top_10 = (existing.top_10 + row.top_10) / 2;
         existing.top_1 = (existing.top_1 + row.top_1) / 2;
@@ -70,29 +68,26 @@ export function MainChart({
     // Transform data based on y-axis selection
      const transformedData = chartData.map((d) => {
        if (filters.yAxis === "Income Share") {
-         return {
-           ...d,
-           top_10: d.top_10 * 100,
-           top_01: d.top_01 * 100,
-           bottom_50: d.bottom_50 * 100,
-           top_1: d.top_1 * 100,
-         };
-       } else if (filters.yAxis === "Real Income Growth") {
-         return {
-           ...d,
-           top_10: d.top_10 * 100,
-           top_01: d.top_01 * 100,
-           bottom_50: d.bottom_50 * 100,
-           top_1: d.top_1 * 100,
-         };
-       } else {
-         return {
-           ...d,
-           top_10: d.top_10 * 100,
-           top_01: d.top_01 * 100,
-           bottom_50: d.bottom_50 * 100,
-           top_1: d.top_1 * 100,
-         };
+           return {
+             ...d,
+             top_10: d.top_10 * 100,
+             bottom_50: d.bottom_50 * 100,
+             top_1: d.top_1 * 100,
+           };
+         } else if (filters.yAxis === "Real Income Growth") {
+           return {
+             ...d,
+             top_10: d.top_10 * 100,
+             bottom_50: d.bottom_50 * 100,
+             top_1: d.top_1 * 100,
+           };
+         } else {
+           return {
+             ...d,
+             top_10: d.top_10 * 100,
+             bottom_50: d.bottom_50 * 100,
+             top_1: d.top_1 * 100,
+           };
        }
      });
 
@@ -142,12 +137,6 @@ export function MainChart({
       .y((d) => y(d.top_10))
       .curve(d3.curveMonotoneX);
 
-    const lineTop01 = d3
-       .line<DataRow>()
-       .x((d) => x(d.year))
-       .y((d) => y(d.top_01))
-       .curve(d3.curveMonotoneX);
-
     const lineBottom50 = d3
       .line<DataRow>()
       .x((d) => x(d.year))
@@ -181,15 +170,6 @@ export function MainChart({
         .attr("stroke-width", 2)
         .attr("d", lineTop10);
     }
-    if (selectedGroups.top01) {
-       svg
-         .append("path")
-         .datum(transformedData)
-         .attr("fill", "none")
-         .attr("stroke", "#8af8cc")
-         .attr("stroke-width", 2.5)
-         .attr("d", lineTop01);
-     }
     if (selectedGroups.bottom50) {
       svg
         .append("path")
@@ -245,14 +225,6 @@ export function MainChart({
               .attr("r", 4.5)
               .attr("fill", "#00ff9c");
           }
-          if (selectedGroups.top01) {
-             focusCircles
-               .append("circle")
-               .attr("cx", x(d.year))
-               .attr("cy", y(d.top_01))
-               .attr("r", 4.5)
-               .attr("fill", "#8af8cc");
-           }
           if (selectedGroups.bottom50) {
             focusCircles
               .append("circle")
@@ -289,13 +261,6 @@ export function MainChart({
                 value: d.top_1.toFixed(1) + "%",
                 color: "#bdea00",
               },
-              {
-                group: "Top 0.1%",
-                value: d.top_01.toFixed(1) + "%",
-                color: "#8af8cc",
-              },
-       
-         
             ],
           });
 
@@ -377,37 +342,23 @@ export function MainChart({
           Top 10%
         </button>
         <button
-          onClick={() =>
-            setSelectedGroups({
-              ...selectedGroups,
-              top_1: !selectedGroups.top_1,
-            })
-          }
-          className="flex items-center gap-2 hover:opacity-80"
-        >
-          <span
-            className={`w-3 h-3 rounded-full ${selectedGroups.top_1 ? "bg-[#bdea00]" : "bg-gray-600"}`}
-            style={{
-              border: selectedGroups.top_1 ? "1px dashed white" : "none",
-            }}
-          ></span>
-          Top 1%
-        </button>
-        <button
-          onClick={() =>
-            setSelectedGroups({
-              ...selectedGroups,
-              top01: !selectedGroups.top01,
-            })
-          }
-          className="flex items-center gap-2 hover:opacity-80"
-        >
-          <span
-            className={`w-3 h-3 rounded-full ${selectedGroups.top01 ? "bg-[#8af8cc]" : "bg-gray-600"}`}
-          ></span>
-          Top 0.1%
-        </button>
-      </div>
+           onClick={() =>
+             setSelectedGroups({
+               ...selectedGroups,
+               top_1: !selectedGroups.top_1,
+             })
+           }
+           className="flex items-center gap-2 hover:opacity-80"
+         >
+           <span
+             className={`w-3 h-3 rounded-full ${selectedGroups.top_1 ? "bg-[#bdea00]" : "bg-gray-600"}`}
+             style={{
+               border: selectedGroups.top_1 ? "1px dashed white" : "none",
+             }}
+           ></span>
+           Top 1%
+         </button>
+        </div>
 
       {/* Chart */}
       <div

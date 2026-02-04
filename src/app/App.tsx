@@ -8,7 +8,6 @@ import { Navigation } from "@/app/components/Navigation";
 export default function App() {
   const [selectedGroups, setSelectedGroups] = useState({
     top10: true,
-    top01: true,
     bottom50: true,
     top_1: true,
   });
