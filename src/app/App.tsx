@@ -23,8 +23,7 @@ export default function App() {
       <header className="bg-[#020b0c] border-b border-[#0a6167]/20">
         <div className="max-w-container mx-auto px-3 sm:px-4 lg:px-6 py-3 sm:py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <TrendingUp className="w-4 sm:w-5 text-[#0a6167]" />
-            <h1 className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold">
+            <h1 className="text-base sm:text-lg md:text-xl lg:text-2xl font-medium">
               Global Inequality Explorer
             </h1>
           </div>
