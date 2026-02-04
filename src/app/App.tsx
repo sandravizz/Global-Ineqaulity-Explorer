@@ -33,25 +33,22 @@ export default function App() {
         </div>
       </header>
       <main className="max-w-container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
-        <div className="mb-4 sm:mb-6 text-xs sm:text-sm text-gray-500 py-2">
-          <p>
-            You can adjust the graph with the options below: what the y-axis
-            displays, the definition of income, the statistical unit, and the
-            data frequency.
-          </p>
+        <div className="flex justify-between items-start gap-4 sm:gap-6 mb-4 sm:mb-6">
+          <div className="flex-1">
+            <FilterPanel filters={filters} setFilters={setFilters} />
+          </div>
+          <div>
+            <DataTable
+              selectedGroups={selectedGroups}
+              setSelectedGroups={setSelectedGroups}
+            />
+          </div>
         </div>
-        <FilterPanel filters={filters} setFilters={setFilters} />
-        <div className="flex-1">
-          <MainChart
-            selectedGroups={selectedGroups}
-            setSelectedGroups={setSelectedGroups}
-            filters={filters}
-          />
-          {/* <DataTable
-            selectedGroups={selectedGroups}
-            setSelectedGroups={setSelectedGroups}
-          /> */}
-        </div>
+        <MainChart
+          selectedGroups={selectedGroups}
+          setSelectedGroups={setSelectedGroups}
+          filters={filters}
+        />
       </main>
     </div>
   );
