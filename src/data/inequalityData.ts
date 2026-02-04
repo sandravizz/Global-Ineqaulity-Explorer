@@ -152,6 +152,28 @@ export const getRegions = (): string[] => {
   return regionList;
 };
 
+// Get countries for a specific region
+export const getCountriesByRegion = (region: string): { code: string; name: string }[] => {
+  if (region === 'All') {
+    return getCountries();
+  }
+  
+  const uniqueCountries = new Map<string, string>();
+  inequalityData
+    .filter(row => row.region2 === region)
+    .forEach(row => {
+      uniqueCountries.set(row.country, row.shortname);
+    });
+  
+  const countryList = Array.from(uniqueCountries.entries())
+    .map(([code, name]) => ({ code, name }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+  
+  console.log(`getCountriesByRegion('${region}') returning:`, countryList.length, 'countries');
+  
+  return countryList;
+};
+
 // Filter data by country or region
 export const filterData = (country?: string, region?: string): DataRow[] => {
   console.log('filterData called with:', { country, region });

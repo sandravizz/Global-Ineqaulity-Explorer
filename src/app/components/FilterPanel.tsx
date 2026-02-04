@@ -1,6 +1,6 @@
 import React from "react";
 import { RotateCcw } from "lucide-react";
-import { getCountries, getRegions } from "@/data/inequalityData";
+import { getCountries, getRegions, getCountriesByRegion } from "@/data/inequalityData";
 
 interface Filters {
   yAxis: string;
@@ -17,12 +17,25 @@ interface FilterPanelProps {
 export function FilterPanel({ filters, setFilters }: FilterPanelProps) {
   const countries = getCountries();
   const regions = getRegions();
+  const filteredCountries = getCountriesByRegion(filters.region);
+
+  const handleRegionChange = (newRegion: string) => {
+    const countriesInRegion = getCountriesByRegion(newRegion);
+    const countryExists = countriesInRegion.some(c => c.code === filters.country);
+    
+    // If current country not in new region, auto-select first country or "All"
+    const newCountry = countryExists 
+      ? filters.country 
+      : (countriesInRegion.length > 0 ? countriesInRegion[0].code : "All");
+    
+    setFilters({ ...filters, region: newRegion, country: newCountry });
+  };
 
   const handleReset = () => {
     setFilters({
       yAxis: "Income Share",
       incomeType: "Factor Income",
-      country: "US",
+      country: "All",
       region: "All",
     });
   };
@@ -37,7 +50,7 @@ export function FilterPanel({ filters, setFilters }: FilterPanelProps) {
           </label>
           <select
             value={filters.region}
-            onChange={(e) => setFilters({ ...filters, region: e.target.value })}
+            onChange={(e) => handleRegionChange(e.target.value)}
             className="w-full bg-[#020b0c] border border-[#0a6167] rounded px-2 sm:px-3 py-2 text-xs sm:text-sm text-[#e5e6ed] focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 min-h-10"
           >
             <option value="All">All Regions</option>
@@ -62,7 +75,7 @@ export function FilterPanel({ filters, setFilters }: FilterPanelProps) {
             className="w-full bg-[#020b0c] border border-[#0a6167] rounded px-2 sm:px-3 py-2 text-xs sm:text-sm text-[#e5e6ed] focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 min-h-10"
           >
             <option value="All">All Countries</option>
-            {countries.map((country) => (
+            {filteredCountries.map((country) => (
               <option key={country.code} value={country.code}>
                 {country.name}
               </option>
