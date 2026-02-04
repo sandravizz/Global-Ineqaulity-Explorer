@@ -37,12 +37,12 @@ export default function App() {
           <div className="flex-1">
             <FilterPanel filters={filters} setFilters={setFilters} />
           </div>
-          <div>
+          {/* <div>
             <DataTable
               selectedGroups={selectedGroups}
               setSelectedGroups={setSelectedGroups}
             />
-          </div>
+          </div> */}
         </div>
         <MainChart
           selectedGroups={selectedGroups}

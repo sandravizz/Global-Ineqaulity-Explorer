@@ -339,7 +339,7 @@ export function MainChart({
     <div className="relative">
       {/* Legend */}
       <div
-        className={`px-2 mt-6 sm:mt-10 mb-2 ${
+        className={`px-2 mt-6 sm:mt-5 mb-2 ${
           isMobile
             ? "flex flex-col gap-3"
             : `flex gap-${chartDims.legendGap} text-${chartDims.legendTextSize}`
