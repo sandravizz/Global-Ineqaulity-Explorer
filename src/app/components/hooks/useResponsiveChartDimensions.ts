@@ -82,15 +82,15 @@ export const useResponsiveChartDimensions = (
       // Desktop: >= 1024px
       setDimensions({
         containerWidth: width,
-        chartHeight: 500,
+        chartHeight: 440,
         margins: {
-          top: 20,
-          right: 50,
-          bottom: 50,
-          left: 60,
+          top: 15,
+          right: 40,
+          bottom: 35,
+          left: 50,
         },
-        tickFontSize: '12px',
-        tickPadding: 20,
+        tickFontSize: '11px',
+        tickPadding: 15,
         legendGap: '20',
         legendTextSize: 'text-sm',
       });

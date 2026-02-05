@@ -93,7 +93,7 @@ Based on `package.json`, these packages appear unused or minimally used:
 
 ---
 
-## 3. UNUSED COMPONENTS IN MAIN APP - deleted 
+## 3. UNUSED COMPONENTS IN MAIN APP
 
 ### ImageWithFallback Component
 **File:** `src/app/components/figma/ImageWithFallback.tsx`
@@ -110,7 +110,7 @@ Based on `package.json`, these packages appear unused or minimally used:
 - `index.css` - Main entry point (USED)
 - `fonts.css` - Imported by index.css (USED)
 - `tailwind.css` - Imported by index.css (USED)
-- `theme.css` - **NOT IMPORTED** - Likely unused - deleted 
+- `theme.css` - **NOT IMPORTED** - Likely unused
 
 **Status:** `theme.css` appears to be orphaned and not loaded
 
@@ -194,7 +194,7 @@ Based on `package.json`, these packages appear unused or minimally used:
 ### High Priority (Quick Wins)
 1. **Delete entire `src/app/components/ui/` directory** - These components aren't being used
 2. **Remove unused npm packages** - Radix UI, embla-carousel, cmdk, react-dnd, etc.
-3. **Delete `src/app/components/figma/ImageWithFallback.tsx`** - Unused component 
+3. **Delete `src/app/components/figma/ImageWithFallback.tsx`** - Unused component
 4. **Check `src/styles/theme.css`** - Determine if it's needed or delete it
 5. **Fix non-functional buttons** - Either implement Share/Download or remove them
 6. **Implement DataTable expand functionality** or remove the button

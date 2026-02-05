@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 
@@ -22,7 +22,7 @@ export function Navigation() {
               : 'text-gray-500 hover:text-gray-300'
           }`}
         >
-          <TrendingUp className="w-4 h-4" />
+          <TrendingUp size="1.2em" color="#1CB0BA" display="block"  />
           {tab.label}
         </button>
       ))}

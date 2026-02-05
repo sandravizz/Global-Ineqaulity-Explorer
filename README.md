@@ -3,12 +3,11 @@
 
 ## Project Vision
 
-After completing the **Global Inequality Story** — an animated, scroll-driven visual narrative built with Squal — it became clear that storytelling alone is not enough. While guided stories help introduce complex topics, users benefit from the ability to explore the data independently.
+After completing the **Global Inequality Story** an animated, scroll-driven visual narrative built with Svelte, layercake and d3, it became clear that storytelling alone is not enough. While guided stories help introduce complex topics, users benefit from the ability to explore the data independently.
 
 This project expands the original narrative into an **interactive data explorer** that allows users to:
 
-- 🌍 Select and compare countries  
-- 📊 Choose and customize inequality metrics  
+- 🌍 Select regions and countries  
 - 🔍 Explore data through self-directed analysis paths  
 - 🧭 Follow insights based on personal curiosity and research goals  
 
